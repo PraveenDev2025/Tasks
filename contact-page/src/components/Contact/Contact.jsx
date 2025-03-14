@@ -49,6 +49,8 @@ export default function Contact() {
     onSubmit: (values) => {
       alert(JSON.stringify(values, null, 2));
     },
+    validateOnChange: false, 
+    validateOnBlur: false, 
   });
 
   return (
