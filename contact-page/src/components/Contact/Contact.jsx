@@ -7,6 +7,7 @@ import {
   FaPaperPlane,
 } from "react-icons/fa";
 import { useFormik } from "formik";
+import emailjs from "@emailjs/browser";
 
 const validate = (values) => {
   const errors = {};
@@ -46,11 +47,26 @@ export default function Contact() {
       message: "",
     },
     validate,
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: (values, { resetForm }) => {
+      emailjs
+        .send(
+          import.meta.env.VITE_EMAILJS_SERVICE_ID,
+          import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+          values,
+          import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+        )
+        .then(
+          () => {
+            alert("Message sent successfully!");
+            resetForm();
+          },
+          () => {
+            alert("Failed to send message, please try again.");
+          }
+        );
     },
-    validateOnChange: false, 
-    validateOnBlur: false, 
+    validateOnChange: false,
+    validateOnBlur: false,
   });
 
   return (
