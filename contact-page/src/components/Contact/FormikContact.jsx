@@ -1,4 +1,3 @@
-import "./Contact.css";
 import {
   FaUser,
   FaEnvelope,
@@ -7,7 +6,6 @@ import {
   FaPaperPlane,
 } from "react-icons/fa";
 import { useFormik } from "formik";
-import emailjs from "@emailjs/browser";
 
 const validate = (values) => {
   const errors = {};
@@ -37,7 +35,7 @@ const validate = (values) => {
   return errors;
 };
 
-export default function Contact() {
+export default function FormikContact() {
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -47,26 +45,11 @@ export default function Contact() {
       message: "",
     },
     validate,
-    onSubmit: (values, { resetForm }) => {
-      emailjs
-        .send(
-          import.meta.env.VITE_EMAILJS_SERVICE_ID,
-          import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-          values,
-          import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-        )
-        .then(
-          () => {
-            alert("Message sent successfully!");
-            resetForm();
-          },
-          () => {
-            alert("Failed to send message, please try again.");
-          }
-        );
+    onSubmit: (values) => {
+      alert(JSON.stringify(values, null, 2));
     },
-    validateOnChange: false,
-    validateOnBlur: false,
+    validateOnChange: false, 
+    validateOnBlur: false, 
   });
 
   return (
@@ -86,7 +69,7 @@ export default function Contact() {
                 name="name"
                 value={formik.values.name}
                 onChange={formik.handleChange}
-                className="inputbox"
+                className="w-full bg-white h-[58px] text-[18px] border border-[#e1e8e4] text-[#707582] px-[10px] py-[20px] pr-[50px] focus:outline-none focus:border-black transition-all duration-300 ease-in"
                 placeholder="Your Name"
               />
             </div>
@@ -105,7 +88,7 @@ export default function Contact() {
                 name="email"
                 value={formik.values.email}
                 onChange={formik.handleChange}
-                className="inputbox"
+                className="w-full bg-white h-[58px] text-[18px] border border-[#e1e8e4] text-[#707582] px-[10px] py-[20px] pr-[50px] focus:outline-none focus:border-black transition-all duration-300 ease-in"
                 placeholder="Email Address"
               />
             </div>
@@ -124,7 +107,7 @@ export default function Contact() {
                 name="phone"
                 value={formik.values.phone}
                 onChange={formik.handleChange}
-                className="inputbox"
+                className="w-full bg-white h-[58px] text-[18px] border border-[#e1e8e4] text-[#707582] px-[10px] py-[20px] pr-[50px] focus:outline-none focus:border-black transition-all duration-300 ease-in"
                 placeholder="Phone Number"
               />
             </div>
@@ -143,7 +126,7 @@ export default function Contact() {
                 name="subject"
                 value={formik.values.subject}
                 onChange={formik.handleChange}
-                className="inputbox"
+                className="w-full bg-white h-[58px] text-[18px] border border-[#e1e8e4] text-[#707582] px-[10px] py-[20px] pr-[50px] focus:outline-none focus:border-black transition-all duration-300 ease-in"
                 placeholder="Subject"
               />
             </div>

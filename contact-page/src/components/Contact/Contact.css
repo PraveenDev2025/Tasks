@@ -1,6 +1,0 @@
-@import "tailwindcss";
-
-.inputbox{
-    @apply w-full bg-white h-[58px] text-[18px] border border-[#e1e8e4] text-[#707582] px-[10px] py-[20px] pr-[50px] focus:outline-none focus:border-black transition-all duration-300 ease-in;
-
-}
