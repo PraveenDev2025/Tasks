@@ -1,3 +1,5 @@
+"use client"
+
 import {
   FaUser,
   FaEnvelope,
@@ -6,7 +8,6 @@ import {
   FaPaperPlane,
 } from "react-icons/fa";
 import { useFormik } from "formik";
-import { Resend } from "resend";
 
 // Form Validation
 const validate = (values) => {
@@ -37,27 +38,8 @@ const validate = (values) => {
   return errors;
 };
 
-//   Send Email using Resend
-const resend = new Resend(import.meta.env.VITE_RESEND_API_KEY);
 
-const sendEmail = async (values, resetForm) => {
-  try {
-    await resend.emails.send({
-      from: "Acme <onboarding@resend.dev>", // Must be a verified domain 
-      to: values.email, // Recipient's email
-      subject: values.subject,
-      text: `Name: ${values.name}\nPhone: ${values.phone}\nMessage: ${values.message}`,
-    });
-
-    alert("Message sent successfully!");
-    resetForm();
-  } catch (error) {
-    console.error("Email send error:", error);
-    alert("Failed to send message, please try again.");
-  }
-};
-
-export default function EmailJSContact() {
+export default function ResendContact() {
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -68,7 +50,26 @@ export default function EmailJSContact() {
     },
     validate,
     onSubmit: async (values, { resetForm }) => {
-      await sendEmail(values, resetForm);
+      try {
+        const response = await fetch("/api/send", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(values),
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          alert("Message sent successfully!");
+          resetForm(); // Clear the form after successful submission
+        } else {
+          alert("Failed to send message: " + result.error);
+        }
+      } catch (error) {
+        alert("Something went wrong! Please try again.");
+      }
     },
     validateOnChange: false,
     validateOnBlur: false,
